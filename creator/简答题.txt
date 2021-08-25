@@ -1,0 +1,50 @@
+1、cocos creator和cocos2dx的区别
+
+【参考答案】cocos creator是一套包含编辑器在内的开发框架，其内部引擎使用了cocos2d-x js的精简修改版本。creator使用js/ts语言开发，以内容创作为核心，脚本作为自定义组件添加到场景的节点上。
+
+2、creator中需要动态载入的资源，放在工程的哪个子目录中
+
+【参考答案】asserts/resources
+
+3、写出代码片段：获取节点node上Label组件，并设置其内容为'hello'
+
+【参考答案】
+let label = node.getComponent(cc.Label);
+label.string = 'hello';
+
+4、列举出组件的生命周期回掉函数，并说明其调用时机
+
+【参考答案】
+onLoad   组件首次激活时触发
+start    组件第一次执行update之前触发
+update     每一帧渲染前调用
+lateUpdate 所有组件update调用后调用
+onDestroy  组件或所在节点调用了destroy()时调用，并在当前帧结束时统一回收组件
+onEnable  组件的enabled/active属性从false变为true时
+onDisable  组件的enabled/active属性从true变为false时
+
+5、creator对齐UI控件使用什么组件？如果想制作一个和屏幕大小一样的节点如何设置该组件
+
+【参考答案】widget组件。设置top,bottom,left,right为0px，且该节点从直接的父节点到场景根节点都必须有widget组件且设置为同屏幕大小。或者1.10之后可设置target为最上层的节点。
+
+6、写一小段代码，使用action将节点node在1秒钟之内从当前位置移动到(100,100)
+
+【参考答案】
+var action = cc.moveTo(1, 100, 100);
+node.runAction(action);
+
+7、什么是draw call? 为什么减少draw call可以优化游戏速度。如何减少draw call? 在creator中如何做
+
+【参考答案】
+cpu向gpu提交一次绘制的图元(顶点)集合即为draw call。draw call太多就会让gpu反复切换渲染状态，cpu需要不断提交数据到gpu，降低帧数。
+减少draw call就要对需要绘制的图元进行合并，这样就要保证这些图元的渲染状态（材质）是一样的，且这些图元必须是在一起绘制的（中间不要插入别的材质的图元）。
+在creator中可使用图集合并工具如texture packer将sprite合并成到一张贴图上，并且安排节点的绘制顺序，将使用同一张贴图的节点放到一起绘制。
+
+8、如果做一个射击游戏，需要发射大量的子弹，为了避免频繁的申请内存，一般会采取什么方法？这个机制会提供哪些接口供游戏逻辑使用。
+
+【参考答案】会采用对象池/内存对象缓存的机制。一个对象池一般会提供, preAllocat(count)接口预先分配一定数量的对象， 
+get()接口返回一个池里面的空闲对象，put(obj)接口将对象返回到池里面，freeAll()/Clear()接口清空整个对象池，释放所有的内存。
+
+9、一张1024*1024，32位的贴图，在内存里面占多少字节?
+
+1024*1024*32/8 = 4M字节
