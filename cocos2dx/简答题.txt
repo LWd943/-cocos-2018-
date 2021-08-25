@@ -1,0 +1,87 @@
+1、cocos2d-x的屏幕适配解决方案？
+kResolutionUnKnown:
+　　这是 cocos2d-x 编写的默认模式，没有做任何处理，在这种情况下，游戏画面的大小与比例都是不可控的
+kResolutionExactFit：
+　 牺牲了画质而保持了全屏显示，对画面进行了拉伸,意味着相对极端情况下，本来精灵是方形的，显示出来变成长方形，
+本来圆形的变成了椭圆，固此模式不推荐使用。
+kResolutionShowAll:
+为了保持设计画面比例对四周进行留黑边处理，使得不同比例下画面不能全屏。鱼和熊掌不能兼得
+kResolutionNoBorder
+此模式可以解决两个问题，其一：游戏画面全屏；其二：保持设置游戏时的宽高比例，相比 kResolutionShowAll 有所区别的是
+，为了填补留下的黑边，将画面稍微放大，以至于能够正好补齐黑边，而这样做的后果可想而知，补齐黑边的同时，
+另一个方向上将会有一部分画面露出屏幕之外。
+而“固定高度”和“固定宽度”则是3.0新加入的方案，固定高度会根据按一定的高度将画面裁剪或留白画面两边，这种模式非常常用，
+一般横屏的游戏都会采用这种模式。这样一来，在编写代码的时候，获取视图的大小，将会固定“高度”这个值，会发生改变的值为“宽度”，
+此时我们的逻辑只需考虑如何适应更加宽的手机屏幕即可。而“固定宽度”模式和“固定高度”正好相反，在竖屏的游戏中非常常用
+
+2、cocos2dx内存管理机制
+
+3、cocos2dx游戏内存优化常用方法
+
+4、说说你了解的Cocos2d-x中所使用的设计模式
+单例模式:Director等
+工厂模式:create()
+观察者模式:Dispatcher(消息机制)
+装饰模式:Action和它的继承类之间的关系
+5、cocos2dx如何处理、存储、显示中文字符串。存储在本地文件里，该如何处理才能防止不乱码？
+使用iconv库进行转换。或者xml进行存储
+6、如何对游戏的"手感"进行改进?游戏手感一般指的是打击感，那么我就在打击到一个游戏对象时，游戏对象要产生击退的效果，产生该对象被打击的感觉。
+时间控制要恰当，要让某个对象（比如拳头）打击到另一个游戏对象的时候，才产生击退效果，这就需要进行使用消息机制和回调来解决。
+7、cocos2dx生命周期函数执行顺序。
+pushScene:
+SecondLayer init
+FirstLayer onExitTransitionDidStart!
+FirstLayer onExit
+SecondLayer onEnter!
+SecondLayer onEnterTransitionDidFinish!
+
+popScene:
+SecondLayer onExitTransitionDidStart!
+SecondLayer onExit
+SecondLayer cleanup!
+FirstScene onEnter!
+FirstScene onEnterTransitionDidFinish!
+
+replaceScene:
+SecondLayer init
+
+FirstLayer onExitTransitionDidStart!
+
+FirstLayer onExit
+
+FirstLayer cleanup!
+
+SecondLayer onEnter!
+
+SecondLayer onEnterTransitionDidFinish!
+
+通过CCTransitionScene来跳转:
+SecondLayer init
+
+FirstLayer onExitTransitionDidStart!
+
+SecondLayer onEnter!
+
+FirstLayer onExit
+
+FirstLayer cleanup!
+
+SecondLayer onEnterTransitionDidFinish!
+
+8、cocos2dx内存释放的顺序以及最佳时机
+顺序(动画缓存 --> 帧缓存 --> 纹理缓存):
+CCAnimationCache::purgeSharedAnimationCache();
+SpriteFrameCache::getInstance()->removeUnusedSpriteFrame();
+CCTextureCache::getInstance()->removeUnusedTextures();
+//CCTextureCache::getInstance()->getCachedTextureInfo();//打印纹理信息
+
+最佳时机:
+在新场景的onEnterTransitionDidFinish并延时适当时间
+
+9、事件分发系统
+
+10、渲染机制
+答:导演类的mainLoop中会调用drawScene,在drawScene中会调用场景类的render,
+render中会递归执行节点类的visit，visit中会调用精灵类的draw,draw中会执行渲染类的addCommand。
+对所有节点执行完addCommand后，会执行渲染类的processRenderCommand，接下来执行渲染类的drawBatchedTriangles，
+最终在drawBatchedTriangles内会调用多个openGL API完成渲染。
