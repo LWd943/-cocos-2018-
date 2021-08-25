@@ -1,0 +1,264 @@
+1、实现strcpy(字符串拷贝)
+char* MyStrCpy( char *pDest, const char *pSrc )    
+{    
+    if( nullptr == pDest || nullptr == pSrc )    
+    {    
+        return nullptr;    
+    }    
+    if( pDest == pSrc )    
+    {    
+        return pDest;    
+
+    }    
+
+    char *pIter = pDest;    //由于pDest的指针已经移动了所以要有个指针用来辅助
+    while( ( *pIter++=*pSrc++ ) !='\0' );    
+    return pDest;    
+}
+2、实现strcat(字符串连接)
+char* MyStrCat( char *pDest, const char *pSrc )    
+{    
+    if( nullptr == pDest || nullptr == pSrc )    
+    {    
+        return nullptr;    
+    }    
+  
+    char *pIter = pDest + strlen( pDest );    
+    while( ( *pIter++=*pSrc++ ) != '\0' );    
+    return pDest;    
+
+}
+3、实现字符串逆序
+char* MyInverted( char *pDest )    
+{    
+    assert( nullptr != pDest );    
+    const int Len = strlen( pDest );    
+    char T = 0;    
+    for( int i = 0; i < Len / 2; ++i )    
+    {    
+        T = pDest[ i ];    
+        pDest[ i ] = pDest[ Len - i - 1 ];    
+        pDest[ Len - i -1 ] = T;    
+    }    
+    return pDest;    
+
+}
+4、C语言中字符串转数字的方法是什么( atoi )，请实现它
+int Myatoi( const char *pString )    
+{    
+    assert( nullptr != pString );    
+    const int Len = strlen( pString );    
+    int Value = 0;    
+    int Times = 1;    
+    for( int i = Len -1; i >= 0; --i, Times *= 10 )    
+    {    
+        Value += ( pString[ i ] - '0' ) * Times;    
+    }    
+    return Value;    
+
+}
+5、实现一个将字符串中所有字母转换为大写的方法 
+char* MyUpper( char *pDest )    
+{    
+    assert( nullptr != pDest );    
+    for( char *i = pDest; *i != '\0'; ++i )    
+    {    
+        if( *i < 'a' || *i > 'z' )    
+        {    
+            continue;    
+        }    
+        *i -= 'a' - 'A';    
+    }    
+    return pDest;    
+
+}
+6、删除链表中值为Value的所有元素( [Head]->[node1]->[node2]->...[noden] )  
+
+struct Node    
+{    
+    Node *mpNext;    
+    int mData;    
+};
+
+void DeleteFromList( Node *pHead, int Value )  
+{  
+    Node *pPrev = pHead;  
+    Node *pNext = pHead->mpNext;  
+    while( nullptr != pNext )  
+    {  
+        if( pNext->mData != Value )  
+        {  
+            pPrev = pNext;  
+            pNext = pNext->mpNext;  
+        }  
+        else  
+        {  
+            pPrev->mpNext = pNext->mpNext;  
+            delete pNext;  
+            pNext = pPrev->mpNext;  
+        }  
+    }  
+}
+7.判断X年X月X日是这年的第几天    
+int GetDay( int Year, int Month, int Day )  
+{    
+    int MonthDays[ 13 ] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };    
+  
+    if( ( Year % 4 == 0 && Year % 100 != 0 ) || ( Year % 400 == 0 ) )    
+    {    
+        ++MonthDays[ 2 ];    
+    }    
+  
+    int Days = 0;    
+    for( int i = 1; i < Month; ++i )    
+    {    
+        Days += MonthDays[ i ];    
+    }    
+    Days += Day;    
+  
+    return Days;    
+
+}
+8、实现strncpy  
+char *Mystrncpy( char *pDest, const char *pSrc, int Count )  
+{  
+    assert( NULL != pDest && NULL != pSrc );  
+    if( pDest == pSrc )  
+    {  
+        return pDest;  
+    }  
+    if( Count <= 0 )  
+    {  
+        return pDest;  
+    }  
+    char *pStart = pDest;  
+    while( ( Count-- ) > 0 && ( *pStart++=*pSrc++ ) );  
+    *pStart = '\0';  
+    return pDest;  
+
+}
+9、在母字符串中查找子字符串出现的次数
+int Num0fstr(char *Mstr, char *substr)
+{
+    int number = 0;
+   
+    char *p;//字符串辅助指针
+    char *q;//字符串辅助指针
+   
+    while(*Mstr != '\0')
+    {
+        p = Mstr;
+        q = substr;
+       
+        while((*p == *q)&&(*p!='\0')&&(*q!='\0'))
+        {
+            p++;
+            q++; 
+        } 
+        if(*q=='\0')
+        {
+            number++; 
+        }
+        Mstr++;
+    }
+    return number;   
+}
+10、给定一个字符串，按单词将该字符串逆序，比如给定"This is a sentence"，则输出是"sentence a is This"，为了简化问题，字符串中不包含标点符号
+1 先按单词逆序得到"sihT si a ecnetnes"
+2 再整个句子逆序得到"sentence a is This"
+// 对指针p和q之间的所有字符逆序
+void ReverseWord(char* p, char* q)
+{
+    while(p < q)
+    {
+        char t = *p ;
+        *p++ = *q ;
+        *q-- = t ;
+    }
+}
+
+// 将句子按单词逆序
+char* ReverseSentence(char* s)
+{
+    // 这两个指针用来确定一个单词的首尾边界
+    char* p = s ; // 指向单词的首字符
+    char* q = s ; // 指向空格或者 '\0'
+
+    while(*q != '\0')
+    {
+        if (*q == ' ')
+        {
+            ReverseWord(p, q - 1) ;
+            q++ ; // 指向下一个单词首字符
+            p = q ;
+        }
+        else
+            q++ ;
+    }
+
+    ReverseWord(p, q - 1) ; // 对最后一个单词逆序
+    ReverseWord(s, q - 1) ; // 对整个句子逆序
+
+    return s ;
+}
+11、在一个字符串中找到第一个只出现一次的字符。如输入abaccdeff，则输出b
+//函数功能 ： 在一个字符串中找到第一个只出现一次的字符 
+//函数参数 ： pStr为源字符串 
+//返回值 ：  目标字符 
+char FirstAppearOnce(char *pStr) 
+{ 
+  if(pStr == NULL) 
+    return '\0'; //未找到返回空字符 
+ 
+  int count[256] = {0}; 
+  char *pTmp = pStr; 
+   
+  while(*pTmp != '\0') //统计字符串中每个字符出现的次数 
+  { 
+    count[*pTmp]++; 
+    pTmp++; 
+  } 
+  while(*pStr != '\0') //遍历字符串，找到第一个只出现一次的字符 
+  { 
+    if(count[*pStr] == 1) 
+      break; 
+    pStr++; 
+  } 
+  return *pStr; //找到的字符 
+}
+12、写一个函数,它的原形是int continumax(char *outputstr,char *intputstr)。功能：在字符串中找出连续最长的数字串，并把这个串的长度返回，并把这个最长数字串付给其中一个函数参数outputstr所指内存。
+        例如："abcd12345ed125ss123456789"的首地址传给intputstr后，函数将返回9，outputstr所指的值为123456789
+    思路：这一题比较简单，扫描一遍字符串即可，遇到数字时将数字个数加1，然后与最长串比较，如果长度大于最长串，更新最长串；遇到非数字时，将数字计数器清零
+
+    //函数功能 ： 在字符串中找出连续最长的数字串 
+//函数参数 ： pSrc表示源串，pDest记录最长数字串的起始位置 
+//返回值 ：  最长数字串的长度 
+int ContinueMax(char *pSrc,char * &pDest) 
+{ 
+  pDest = NULL; 
+  if(pSrc == NULL) 
+    return 0; 
+ 
+  int max = 0, cnt = 0; 
+  while(*pSrc != '\0') 
+  { 
+    if(*pSrc >= '0' && *pSrc <= '9') //数字 
+    { 
+      cnt++; 
+      if(cnt > max) //更新最长的数字串 
+      { 
+        pDest = pSrc - cnt + 1; 
+        max = cnt; 
+      } 
+    } 
+    else 
+      cnt = 0; 
+    pSrc++; 
+  } 
+  if(cnt > max) 
+  { 
+    pDest = pSrc - cnt + 1; 
+    max = cnt; 
+  } 
+  return max; 
+} 

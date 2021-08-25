@@ -1,0 +1,2052 @@
+1、下列程序的运算结果是
+int x = 2,y,z;
+x *=(y=z=5);cout << x << endl;
+z = 3;
+x == (y = z); cout << x << endl;
+x = (y == z);cout << x << endl;
+x = (y &z);cout << x << endl;
+x = (y&&z); cout << x << endl;
+y = 4;
+x = (y|z); cout << x << endl;
+x = (y||z);cout << x << endl;
+
+10,10,1,3,1,7
+2、下列程序的运算结果是
+int Vec = 3;
+int main()
+{
+    int Vac = 10;
+    ::Vac++;
+    cout << ::Vac << endl;
+    cout << Vac << endl;
+    return 0;
+}
+4,10
+3、下列程序的运算结果是
+int i = 3,j = 4;
+i?i++:++j;
+printf("%d,%d\n",i,j);
+4,4
+4、下列程序的运算结果是
+int i = 1,j=2;
+int k = i+++j;
+cout << k << endl;
+3
+5、x = x+1,x+=1,x++;哪个效率更高？为什么？
+x = x+1效率最低，因为执行过程是读取右边x的地址，然后x+1，然后读取左边x地址，最后把右边的值传给左边的x（编译器不会认为左右x的地址是相同的）
+x+=1：读取右x的地址，执行x+1，将值传给x（x的地址已经读出）
+x++效率最高，读取右x的地址，x自增1；
+
+6、
+#define proguct(x) (x*x)
+int mian()
+{
+	int i = 3,j,k;
+	j = product(i++);
+	k = product(++i);
+	printf("j = %d,k = %d",j,k);
+	reuturn 0;
+}
+9,49
+
+7、int a =5,b = 3;执行!a&&b++后a和b的值分别是？ 5,3
+
+8、下列哪种写法更好，为什么
+if('A' == a)
+{
+	a++;
+}
+上面的写法更好，因为如果不小心把==写成=，编译器不允许常量被赋值，所以可以检查错误。
+if(a == 'A' )
+{
+	a++;
+}
+
+for(int i = 0;i < 8;i++)
+{
+	X = i+Y+J*7;
+	printf("%d",x);
+}
+
+S = Y+J*7;
+for(int i = 0;i < 8;i++)
+{
+	printf("%d",i+S);
+}
+这种写法更好，将部分加法运算放到循环体外面，提高了效率，缺点是程序不够简洁。
+
+9、下列运算结果是？
+
+char foo(void)
+{
+	unsigned int a = 6;
+	int b = -20;
+	char c;
+	(a + b>6)?(c=1):(c=0);
+	reuturn c;
+}
+
+unsigned int 类型的数据在与int类型数据运算后，会自动转化为unsigned int类型，所以a+b的值并不是-14，而是unsigned int类型的数4294967382，所以返回值是1.
+解决办法，进行类型转换，或者用一个int类型接收。
+
+10螺旋队列
+21  22...
+20  7  8  9  10
+19  6  1  2  11
+18  5  4  3  12
+17  16 15 14 13
+
+看清以上数字的排列规律，设1点的坐标是（0,0），x方向向右为正，y方向向下为正。列入7的坐标是（-1，-1）,2的坐标为（0,1），3的坐标为（1,1），编程实现任意一点的坐标（x,y）输出对应的数字。
+
+#define max(a,b) ((a)<(b)?(b):(a))
+#define abs(a) ((a)>0?(a):-(a))
+int foo(int x,int y)
+{
+	int t = max(abs(x),abs(y));
+	int u = t+t;
+	int v = u -1;
+	if(x == -t)
+	{
+		v+= u+t-y;
+	}
+	else if(y == -t)
+	{
+		x += 3*u +x-t;
+	}
+	else if(y == t)
+	{
+		v += t-x;
+	}
+	else
+	{
+		v+=y-t;
+	}
+	rerturn  v;
+}
+
+int main()
+{
+	int x,y;
+	for(y = -4;y <=4;y++)
+	{
+		for(x = -4;x <=4;x++)
+		{
+			printf("%5d",foo(x,y));
+			printf("\n");
+		}
+	}
+	while(scanf("%d%d",&x,&y)==2)
+	{
+		printf(%d\n,foo(x,y);
+	}
+
+	return 0;
+}
+
+11、有两个变量a和b不用if，:?，switch或者其他判断语句，找出两个数中较大的。
+int max = ((a+b)+abs(a-b))/2; //abs:绝对值
+
+int c = a -b;
+char *strs[2] = {"a大","b大"};
+c = unsigned(c)>>{sizeof(int)*8-1);
+
+12、交换ab的值，并且不使用任何中间变量
+a = a +b;
+b = a-b;
+a = a-b;
+缺点：如果ab是比较大的两个数会超界；
+a = a^b;
+b = a^b;
+a = a^b;
+没有超界问题。
+													
+13.在c++程序中调用被c编译器编译过后的函数，为什么要加extern "C"?
+C++语言支持函数重载，C语言不支持函数重载。函数被C++编译后在库中的名字跟C语言的不同。假设某个函数原型为：void foo(int x,int y).该函数被C编译器编译后在库中的名字是__foo,而C++编译则会产生像_foo_int_int之类的名字。
+C++提供了C连接交换指定符号extern "C"解决名字匹配问题。
+
+14.头文件中的ifndef/define/endif是干什么用的？
+防止头文件被重复引用。
+
+15、#include <filename.h>和 #include "filename.h"有什么区别？
+<>:编译器从标准库路径开始搜索filename.h
+"":编译器从用户的工作路径开始搜索filename.h
+
+16、如何判断一段程序是由C编译程序还是C++编译程序编译？
+C++编译时定义了cplusplus
+C编译时定义了__STDC_
+
+17、下面代码的输出结果是？
+#define SQR(X) (X*X)
+
+main()
+{
+	int a, b= 3;
+	a = SQR(b+2);
+	printf("\n%d",a);
+}
+11
+
+18、用预处理指令#define声明一个常数，用以表示一年中有多少秒（忽略闰年问题）
+#define语法的基本知识：不能以分号结束，括号的使用。
+表达式将会使16位机器溢出，因此要用到长整型符号L，告诉编译这个常数是长整型数
+UL（无符号长整型）
+#define SECONDS_PER_YEAR(60*60*24*365)UL
+
+19、写一个“标准”宏MIN，这个宏输入两个参数并且返回较小的一个。
+#define MIN(A,B) ((A)<=(B))?(A):(B)
+
+20.const什么用途，请至少说出两种。
+（1）可以定义const常量（2）cosnt可以修饰函数的参数和返回值，甚至函数的定义体。被const修饰的东西都受到强制保护，可以预防意外的变动，提高程序的健壮性。
+
+22、const和#define相比有什么不同？
+c++可以用const定义常量也可以用define定义常量，但是前者比后者有更多的优点：
+（1）const常量有数据类型，宏常量没有。编译器可以对前者进行类型安全检查，而对后者只有字符替换，没有类型安全检查，并且字符替换中可能会产生意料不到的错误（边界效应）
+（2）有些集成化的调试工具可以对const常量进行调试，但是不能对宏常量进行调试。在C++程序中只使用const常量，而不使用宏常量，即const常量完全取代宏常量。
+
+23、下列代码结果是
+
+struct A
+{
+	short a1;
+	short a2;
+	short a3;
+}
+
+struct B
+{
+	long a1;
+	short a2;
+}
+int main()
+{
+	char* ss1 = "0123456789";
+	char ss2[] ="0123456789";
+	char ss3[100]="0123456789";
+	int ss4[100];
+	char q1[] ="abc";
+	char q2[] = "a\n";
+	char* q3 = "a\n";
+	char* str1 = (char*)malloc(100);
+	void* str2 = (char*)malloc(100);
+
+	cout << sizeof(ss1) << endl; 4
+	cout << sizeof(ss2) << endl;11
+	cout << sizeof(ss3) << endl;100
+	cout << sizeof(ss4) << endl;400
+	cout << sizeof(q1) << endl;4
+	cout << sizeof(q2) << endl;3
+	cout << sizeof(q3) << endl;4
+	cout << sizeof(A) << endl;6
+	cout << sizeof(B) << endl;8
+	cout << sizeof(str1) << endl;4
+	cout << sizeof(str2) << endl;4
+}
+CPU优化原则，对于n字节的元素（n = 2,4,8...）他的首地址能够被n整除，才能获得最好的性能。
+设计编译的时候遵循这个原则：对于每个变量，可以从当前位置向后找到第一个满足这个条件的地址，作为首地址。
+
+24、下面代码的输出结果是？
+#include <iostream>
+using namespace std;
+
+class A{
+
+};
+
+class A2{
+	char d,e;
+};
+
+struct B{
+
+};
+
+struct C{
+	char b,c;
+};
+
+struct D{
+	int x,y;
+};
+
+int main(){
+	cout <<sizeof(A)<< endl;1
+	cout << sizeof(A2) << endl;2
+
+	A* p1 = new A();
+	A p2;
+	A* p3;
+	
+	cout << sizeof(p1)<< endl;4
+	cout << sizeof(p2)<< endl;1
+	cout << sizeof(p3)<< endl;4
+	cout << sizeof(B)<< endl;1
+	cout << sizeof(C)<< endl;2
+	cout << sizeof(D)<< endl;8
+
+	return 0;
+
+}
+
+25、求解下面程序的结果
+#include <iostream>
+
+class A1
+{
+public:
+	int a;
+	static int b;
+
+	A1();
+	~A1();
+};
+
+class A2
+{
+public:
+	int a;	
+	char c;
+	A2();
+	~A2();
+};
+
+class A3
+{
+public:
+	float a;
+	char c;
+	A3();
+	~A3();
+};
+
+class A4
+{
+public:
+	float a;
+	int b;
+	char c;
+	A4();
+	~A4();
+};
+
+class A5
+{
+public:
+	double d;
+	float a;
+	int b;
+	char c;
+	A5();
+	~A5();
+};
+
+int main()
+{
+	cout << sizeof(A1)<< endl;4
+	cout << sizeof(A2)<< endl;8
+	cout << sizeof(A3)<< endl;8
+	cout << sizeof(A4)<< endl;12
+	cout << sizeof(A5)<< endl;24
+	return 0;
+}
+
+26、说明sizeof和strlen之间的区别
+（1）sizeof操作符的结果类型是size_t,它在头文件中的typedef为unsigned int类型。该类型保证能容纳实现所建立的最大对象的字节大小。
+（2）sizeof是运算符，strlen是函数。
+（3）sizeof可以用类型做参数，strlen只能用char*做参数，且必须以“\0”结尾的。sizeof还可以用函数做参数，比如 short f();printf("%d\n",sizeof(f()));
+输出结果是sizeof（short），即2.
+（4）数组做sizeof的参数不退化，传递给strlen就退化为指针。
+（5）大部分编译程序在编译的时候就把sizeof计算过了，是类型或是变量的长度。这就是sizeof(x)可以用来定义数组维数的原因。
+char str[20] = "0123456789";
+int a = strlen(str);//a=10;
+int b = sizeof(str);//b = 20;
+（6）strlen的结果是在运行的时候才能计算出来，用来计算字符串的长度，而不是类型占内存的大小。
+（7）sizeof后如果是类型必须加括号，如果是变量名可以不加括号。这是因为sizeof是个操作符而不是个函数。
+（8）当使用了一个结果类型或变量时，sizeof返回实际的大小。当使用静态的空间数组时，sizeof返回全部数组的尺寸。sizeof操作符不能返回被动态分配的数组或外部的数组的尺寸。
+（9）数组作为参数传给函数时传的是指针而不是数组，传递的是数组的首地址，如：fun(char[8])、fun(char[])都等价于fun（char*）.在C++里传递数组永远都是传递指向数组首元素的指针，编译器不知道数组的大小。如果想在函数内知道数组的大小，需要这样做：进入函数后用memcpy将数组拷贝出来，长度由另一个形参传进去。代码如下：
+func( unsigned char* p1,int len)
+{
+	unsigned char* buf = new unsigned char(len+1);
+	memcpy(buf,p1,len);
+}
+（10）计算结构变量的大小就必须讨论数据对齐问题。为了使CPU存取的速度最快（这同CPU取数操作有关，详细的介绍可以参考一些计算机原理方面的书），C++在处理数据时经常把结构变量中的成员的大小按照4或8的倍数计算，这就叫数据对齐。这样做可能会浪费一些内存，但是在理论上CPU的速度快乐。当然，这样设置会在读写一些别的应用程序生成的数据文件或交换数据时带来不便。 MS VC++ 中的对齐设定，有时候sizeof得到的与实际不等。一般在Vc++中加上#pragma pack（n）的设定即可。或者如果要按字符存储，而不进行数据对其，可以在Options对话框中修改Advanced Complier选项卡中的“Data Alignment”为按字节对齐。
+（11）sizeof操作符不能用于函数类型、不完全类型或位字段。不完全类型指具有未知存储大小数据的数据类型，如未知存储大小的数组类型、未知内容的结构或联合类型、void类型等。
+
+27、说明sizeof的使用场合。
+（1）sizeof操作符的一个主要用途是与存储分配和I/O系统那样的例程进行通信，例如：
+void *malloc(size t size),
+size_t fread(void* ptr,size_t size,size_t nmemb,FILE* stream)
+（2）用它可以看看某种类型的对象在内存中所占的单元字节。例如：
+void* memset(void* s,int c,sizeof(s))
+（3）在动态分配一对象时，可以让系统知道要分配多少内存。
+（4）便于一些类型的扩充。在Windows中有很多结构类型就有一个专用的字段用来存放该类型的字节大小。
+（5）由于操作数的字节数在实现时可能出现变化，建议在涉及到操作数字节大小时用sizeof代替常量计算。
+（6）如果操作数是函数中的数组形参或函数类型的形参，sizeof给出其指针的大小。
+
+28、int **a[3][4]这个数组占多大空间。 3*4*4 = 48
+
+
+30、写出下面sizeof的答案
+
+#include <iostream>
+#include <complex>
+
+class Base
+{
+public:
+	Base(){cout <<"Base-ctor"<< endl;}
+	~Base(){cout <<"Base-dtor"<< endl;}
+
+	virtual void f(int){cout <<"Base::f(int)"<< endl;}
+	virtual void f(double){cout <<"Base::f(double)"<< endl;}
+	virtual void g(int i = 10){cout <<"Base::g()"<< i << endl;}
+	void g2(int i = 10){cout <<"Base::g2()"<< i << endl;}
+};
+
+class Dervied:public Base
+{
+public:
+	Dervied(){cout <<"Dervied-ctor"<< endl;}
+	~Dervied(){cout <<"Dervied-dtor"<< endl;}
+	void f(){complex<double>){cout <<"Dervied::f(complex)"<< endl;
+	virtual void g(int i = 20){cout <<"Dervied::g()" << i << endl;}
+};
+
+int main()
+{
+	Base b;
+	Dervied d;
+
+	Base* pb = new Dervied();
+	cout << sizeof(Base) << "tt" << endl;//4
+	cout << sizeof(Derived)<<"bb"<< endl;//4
+}
+
+31下面代码的输出结果是
+
+char var[10];
+int test(char var[])
+{
+	return sizeof(var);
+}
+
+var[]等价于*var,已经退化成一个指针了，所以大小是4；
+
+32下面代码的输出结果是：
+
+class B
+{
+	float f;//4个字节
+	char p;//1个字节   内存对齐所以4个字节
+	int adf[3];//12个字节
+}
+
+cout <<"" << sizeof(B);//20
+
+33，一个空类占多少空间？多重继承的空类呢？
+1   1
+
+34、内联函数和宏的差别是？
+内联函数和普通函数相比可以加快程序的运行速度，因为不需要中断调用，在编译的时候内联函数可以直接被镶嵌到目标代码中。而宏只是一个简单的替换。
+内联函数要做参数类型检查，这是内联函数跟宏相比的优势。
+inline是指嵌入代码。就是在调用函数的地方不是跳转，而是把代码直接写到那里去，对于短小的代码来说，inline可以带来一定的效率提升，而且跟C时代的宏函数相比，inline更安全可靠，可是这个是以增加空间消耗为代价的。所以是否使用inline据具体情况取舍。
+inline一般用于如下
+(1)一个函数不断被重复调用。
+（2）函数只有简单几行，而且函数内不包含for/while/switch语句。
+一般来说写小程序没必要定义成inline，但是如果要完成一个工程项目，当一个简单的函数被多次调用时，这个时候就要考虑用inline
+宏在C语言极其重要，但是在c++中用得就少多了。关于宏的第一个规则是：就不应该去使用它，除非不得不这样做。几乎每个宏都表明了程序设计语言里或者程序里或者程序员的一个缺陷，因为他将在编译器看到程序的正文之前重新摆布这些正文。宏也是许多程序设计工具的主要麻烦。
+宏是在代码处不加任何验证的简单替代，而内联函数是将代码直接插入调用处，减少了普通函数调用时的资源消耗。
+宏不是函数，只是在编译前（编译预处理阶段）将程序中有关字符串替换成宏体。
+
+
+
+35指针和引用的差别。
+（1）非空区别。在任何情况下都不能使用指向空值的引用。一个引用总是指向某些对象。而指针可以为空值。如果你需要一个变量，这个变量可以指向一个对象也可以不指向任何对象，这时你应该把变量声明为指针；相反，你只让这个变量指向一个确定的对象且不能为空，这时你需要把它声明为引用。
+（2） 合法性区别。在使用引用前不需要测试它的合法性。相反，指针则应该总是被测试，防止其为空。这都是他们的非空区别觉得的。
+（3） 可修改区别。指针可以被重新赋值以指向另一个不同的对象。但引用则总是指向在初始化时被指定的对象，以后都不能更改，但其指定的对象的内容是可以改变的。
+（4） 应用区别。 在以下情况下你应该用指针：一是你考虑到存在不指向任何对象的可能（在这种情况下，你能够设置指针为空），二是你需要在不同的时刻指向不同的对象（在这种情况下，你能够改变指针的指向）。 如果总是指向一个对象并且一旦指向一个对象后就不会改变指向，那么你应该使用引用。
+
+36、看下面的程序哪里有错
+#include <iostream>
+using namesapce std;
+int main()
+{
+	int iv;
+	int iv2 = 1024;
+	int iv3 = 999;
+	int &reiv;//错误声明引用，引用不能为空，必须初始化。
+	int &reiv2 = iv;
+	int &reiv3 = iv;
+	int*pi;
+	*pi = 5;//错误，指针并未指向实际的地址，这个时候去对他赋值是错误的，因为赋的值不知道存储在哪里。
+	pi = &iv3;
+	const double di;//错误，const常量赋值时，必须同时初始化。
+	const double maxWage = 10.0;
+	const double minWage = 0.5;
+	const double* pc = &maxWage;
+
+	cout << pi;
+	return 0;
+}
+
+37、下面关于“this”指针的叙述哪个是不正确的
+
+让x类的每个对象都指向他的地址；
+可以隐形传递this指针
+不能在类的成员函数理明确声明。//错误。
+他是一个常量函数中的一个常量指针。
+
+
+39、这个程序测试后会有什么结果
+#include <iostream>
+
+void GetMemory(char* p,int num)
+{
+	p = (char*)malloc(sizeof(char)*num);
+}
+
+int main()
+{
+	char* str = NULL;
+	GetMemory(str,100);
+	strcpy(str,"hello");
+	return 0;
+}
+
+void GetMemory中的*p实际上是主函数*str的一个副本，编译器总要为函数的每个参数制作临时副本。在题中p申请了新的内存，只是把p指向的地址改变了，但是str丝毫未变。因为Get函数没有返回值，因此str并不是指向p所申请的那一段内存，所以函数get并不能输出任何东西。事实上，每执行一次get函数就会申请一块内存，但是申请的内存却不能有效的释放，结果内存一直被独占，最终造成内存泄漏。
+修改
+
+#include <iostream>
+
+void GetMemory(char**p,int num)
+{
+	*p = (char*)malloc(sizeof(char)*num);
+}
+
+int main()
+{
+	char* str = NULL;
+	GetMemory(&str,100);
+	strcpy(str,"hello");
+
+	cout << *str << endl;
+	cout << str << endl;
+	cout << &str<< endl;
+	return 0;
+
+
+}
+
+答案：程序崩溃。因为GetMemory并不能动态传递内存，Test函数中的str一直都是NULL
+
+40、这个程序测试后会有什么结果
+
+#include <iostream>
+
+using namesapce std;
+
+char* GetMemory(void)
+{
+	char p[] ="hello world";
+	return p;
+}
+
+int main()
+{
+
+	char*str =NULL;
+	str = GetMemory();
+	cout << str;
+	return 0;
+}
+
+答案：可能是乱码，也有可能正常输出，因为GetMemory返回的是指向“栈内存”的指针，该指针的地址不是NULL，但是其原来的内容已经被清楚，新内容不可知。
+
+41、下面代码的输出结果是
+#include <iostream>
+using namespace std;
+
+void change(int* a,int &b,int c)
+{
+	c = *a;
+	b = 3;
+	*a = 2;
+}
+
+int main()
+{
+	int a = 1;
+	int b = 2;
+	int c = 3;
+	change(&a,b,c);
+	cout << a << b << c;
+	return 0;
+}
+2 3 3
+
+42、找出下面程序的错误，并且解释为什么？
+
+#include <stdio.h>
+
+void swapxy(char*a,char*b)
+{
+	int x = *a,y =*b;
+	x = x+y;
+	y = x-y;
+	x = x-y;
+
+	*a = x;
+	*b = y;
+	return;
+}
+
+int main()
+{
+	char a = 'a',b = 'B';
+	char& x = a,&y  = b;
+	printf("a = '%c' and b = '%c' before swaping.\n",a,b);
+	swapxy(x,y);
+	printf("a = '%c' and b = '%c' after swaping.\n",a,b);
+}
+
+修改
+
+#include <stdio.h>
+
+void swapxy(char&a,char&b)
+{
+	int x = a,y =b;
+	x = x+y;
+	y = x-y;
+	x = x-y;
+
+	a = x;
+	b = y;
+	return;
+}
+
+int main()
+{
+	char a = 'a',b = 'B';
+	char& x = a,&y  = b;
+	printf("a = '%c' and b = '%c' before swaping.\n",a,b);
+	swapxy(x,y);
+	printf("a = '%c' and b = '%c' after swaping.\n",a,b);
+}
+
+43、关于函数的参数在调用和返回过程中的值，下列哪个说法是正确的。
+A实参不会改变
+B实参可能会改变 这个选项是正确的。
+C如果是指针，肯定不会改变
+D如果不是指针可能会改变
+
+44、下列代码的运行结果是什么？？？
+int *ptr;
+ptr =(int*)0x8000;
+*ptr = 0xaabb;
+指针问题。这样做会导致运行的时候出错，因为这个样的写法会给一个指针分配一个随机的地址，这是非常危险的，不管这个指针有没有被使用过，这都是不允许的。
+
+45、写出下列程序的输出结果。
+
+#include <iostream>
+
+using namespace std;
+class A
+{
+public:
+	virtual void print(void)
+	{
+		cout <<"A::print()"<< end;
+	}
+};
+
+class B : public A
+{
+public:
+	virtual void print(void)
+	{
+		cout <<"B::print()"<< end;
+	}
+};
+
+class C: public A
+{
+public:
+	virtual void print(void)
+	{
+		cout <<"C::print()"<< end;
+	}
+};
+
+void print(A a)
+{
+	a.print();
+}
+
+int main(void)
+{
+	A a,*pa,*pb,*pc;
+	B b;
+	C c;
+
+	pa = &a;
+	pb =&b;
+	pc =&c;
+
+	a.print();//A
+	b.print();//B
+	c.print();//C
+
+ 	pa->print();//A
+	pb->print();//B
+	pc->print();//C
+	print(a);//A
+	print(b);//A
+	print(c);//A
+	reutrn 0;
+}
+
+46、写出函数指针、函数返回指针，const指针，指向const的指针，指向const的cosnt指针
+
+void (*f)();
+void* f();
+const int*
+int* const
+const int* const;
+
+47、找出下列程序的错误并解释为什么？
+#include <studio.h>
+
+int max(int x,int y)
+{
+	return x > y?x:y;
+}
+
+int main()
+{
+	int main(x,y);//错误1
+	int *p = &max;//错误2
+	int a,b,c,d;
+	printf("Please input three interger \n");
+	scanf("%d%d%d",a,b,c);//错误3
+	d =(*p)((*p)(a,b),c);
+	printf("Among %d,%d,and %d,the maxmal integer is %d \n",a,b,c,d);
+	return 0;
+}
+函数指针错误使用
+#include <studio.h>
+
+int max(int x,int y)
+{
+	return x > y?x:y;
+}
+
+int main()
+{
+	int main(int,int);
+	int (*p)(int,int) = &max;
+	int a,b,c,d;
+	printf("Please input three interger \n");
+	scanf("%d%d%d",&a,&b,&c);
+	d =(*p)((*p)(a,b),c);
+	printf("Among %d,%d,and %d,the maxmal integer is %d \n",a,b,c,d);
+	return 0;
+}
+
+48、下面数据声明都代表什么
+float(**def)[10];def是一个二级指针，它指向的是一个一位数组的指针，数组的元素都是float
+double*(*gh)[10];gh是一个指针，他指向一个以为数组，数组的元素都是double*
+double(*f[10])();f是一个数组，f有10个元素，元素都是函数指针，指向函数类型是没有参数并且返回double的函数
+int*((*b)[10]);就跟int*(*b)[10]是一样的，b是一个一位数组的指针
+Long(*fun)(int);函数指针
+int(*(*F)(int,int))(int);F是一个函数指针，指向的函数的类型是有两个int参数并且返回一个函数指针的函数，返回的函数指针指向有一个int参数且返回int的函数
+
+49、
+int a[9];
+int *p;
+p = a;
+请问哪个不能表示a[1]
+A p+1,B p++ C a++,D a+1
+//数组名a作为代表数组的首地址，是一个常量指针是不能被修改的，所以C
+
+50、下面程序的输出结果是什么？
+static int a[3][3] = {1,3,5,7,9,11,13,15,17},y,x,*p = &a[2][2];
+for(x = 0;x < 3;x++)
+{
+	y+=*(p-4*x);
+}
+printf("\n%d",y);
+数组指针问题。
+3次循环相加的数分别是17+9+1 = 27
+
+51、一个指向整型数组的指针的定义为：A   A int(*ptr)[] B int *ptr[] C int *(ptr[]) D int ptr[]
+int(*ptr)[]指向整型数组的指针。
+int *ptr[]指针数组，里面存储的是地址。
+int *(ptr[]);与int *ptr[]一样
+int ptr[]普通数组
+
+52、用变量a给下面定义
+一个整型数 int a
+一个指向整型数的指针 int *a
+一个指向指针的指针，他指向的指针是一个指向一个整型数 int **a;
+一个有10个整型数的数组	int a[10]
+一个有10个指针的数组，该指针指向一个整数 int *a[10];
+一个指向有10个整型数数组的指针 int(*a)[10]
+一个指向函数的指针，该函数有一个整型参数并返回一个整型数int(*a)(int)
+一个有10个指针的数组，该指针指向一个函数，该函数有一个整型参数并返回一个整型数：int(*a[10])(int)
+
+53、
+typedef unsigned short int USHORT;
+#include <iostream.h>
+int main()
+{
+	USHORT* pInt = new USHORT;
+	*pInt = 10;
+	cout <<"*pint"<< *pInt << endl;
+	delete pInt;
+	pInt = 0;
+	long* pLong = new long;
+	*pLong = 90000;
+	cout <<"*pLong"<< *pLong << endl;
+	*pInt = 20;
+	cout <<"*pint"<< *pInt << endl;
+	cout <<"*pLong"<< *pLong << endl;
+	delete pLong;
+	return 0;
+}	
+
+以上程序使用了迷途指针并重新赋值，造成系统崩溃。
+
+54、空指针和迷途指针的区别是什么。
+当delete一个指针的时候，他实际上仅是让编译器释放内存，但是指针本身依然存在，这时候他就是一个迷途指针。
+当使用以下语句的时候可以把迷途指针改成空指针
+myptr = nullptr
+通常如果在删除一个指针后又删除一次，程序就会变得非常不稳定，任何情况都有可能发生，但是如果只是删除一个空指针，则什么事都不会发生，这样做非常安全。
+使用迷途指针或者空指针是非法的，而且有可能造成程序崩溃。如果指针是空指针，尽管同样是崩溃，但他同迷途指针造成的崩溃相比是可以预料的崩溃，这样调试起来方便多了。
+
+55、C++中有了malloc/free,为什么还需要new/delete?
+malloc与free是C++/C语言的标准库函数，new/delete是C++的运算符，他们都可以用于动态申请内存和释放内存。
+对于非内部数据类型对象而言，光用malloc/free无法满足动态对象的要求。对象在创建的同时要自动执行构造函数，对象再消亡的之前要自动执行析构函数，由于 malloc/free是库函数而不是运算符，不在编译器的控制权限之内，不能够把执行构造函数和析构函数的任务强加于 malloc/free。
+因此C++语言需要一个能够完成动态分配内存和初始化工作的运算符new，以及能够完成清理和释放内存工作的运算符delete。new/delete不是库函数，而是运算符。
+
+10.1面向对象的基本概念
+面试例题1：面向对象技术的基本概念是什么？
+解析：按照定义，OO（面向对象）编程语言必须提供对象、类和继承。
+答案：对象、类和继承。
+
+面试例题2：C++中的空类默认产生哪些类成员函数？
+Class Empty
+{
+Public;
+};
+解析：类的概念
+答案：对于一个空类，编译器默认产生4个成员函数：默认构造函数、析构函数、拷贝构造函数和赋值函数。
+
+面试例题3：Which is incorrect about the class?（关于类，下面哪个叙述是错误的？）
+A. A class is a blueprint to objects.（类是对象的设计蓝图）
+B. 我们用关键字类来创建一个类的结构。
+C. 一旦一个类被声明，这个类名可以用做一个类型名来声明变量。
+D. 类和结构一样，两者没有任何区别。
+解析：类的概念问题。
+答案：D
+
+面试例题4：下面关于面向对象技术的叙述，哪个是错误的？
+A. 面向对象的关键特点是使用软件对象来编程。
+B. 面向对象程序提供了很多优势：简易化、模块化、易修改性、扩展性等等。
+C. 面向对象的特点和面向过程的特点一样，重点在于一步一步的过程。
+D. 面向对象的关键特点是数据过程的附加。
+解析：OOP的概念问题。面向对象和面向过程不能混为一谈。
+答案：C和D
+
+10.2类和结构
+面试例题1：struct和class的区别？
+答案：在C++中两者的唯一区别是：struct里面默认的访问控制是public，class中默认的访问控制是private。
+
+面试例题2：现有以下代码，则编译时会产生错误的是_____。
+Struct Test
+{
+Test(int){}
+Test(){}
+Void fun(){}
+};
+
+Int main()
+{
+Test a(2);//语句1
+a.fun();//语句2
+Test b();//语句3
+b.fun();//语句4
+return 0;
+}
+A.	语句1		B.语句2		C.语句3		D.语句4
+解析：Test b()是不正确的，英文它不需要预先赋值。不像Test a(1)需要预先赋值，所以Test b()改为 Test b()即可。但在程序中这个错误在编译时是检测不出来的。出错的是语句4 “b.fun();”，它是编译不过去的。
+答案：D。
+
+10.3成员变量
+面试例题1：哪一种成员变量可以在同一个类的实例之间共享？
+答案：必须使用静态成员变量在一个类的所有实例间共享数据。如果想限制对静态成员变量的访问，则必须把它们声明为保护型或私有型。
+不允许用静态成员变量去存放某一个对象的数据。静态成员数据是在这个类的所有对象间共享的。
+
+面试例题2：指出下面程序的错误。如果把静态成员数据设为私有，该如何访问？
+#include <iostream>
+Using namespace std;
+
+Class Cat
+{
+public:
+Cat(int age):itsAge(age) {HowManyCats++;}
+Virtual ~Cat(){HowManyCats--;}
+Virtual int GetAge(){return itsAge;}
+Virtual void SetAge(int age) {itsAge = age;}
+Static int HowManyCats;
+private:
+Int itsAge;
+};
+
+Int main()
+{
+Const int MaxCats = 5;
+Int i;
+Cat* CatHouse[MaxCats];
+for(i = 0; i < MaxCats; i++)
+{
+CatHouse[i] = new Cat(i);
+}
+For(i = 0; i < MaxCats; i++)
+{
+cout<<”THere are”;
+cout<<Cat::HowManyCats;
+cout<<”cats left!\n”;
+cout<<”Deleting the one which is”;
+cout<<CatHouse{i}->GetAge();
+cout<<”years old\n”;
+Delete CatHouse[i];
+CatHouse[i] = 0;
+}
+return 0;
+}
+答案：该程序错在设定了静态成员变量，却没有给静态成员变量赋初值。如果把静态成员数据设为私有，可以通过公有静态成员函数访问
+#include <iostream>
+Using namespace std;
+
+Class Cat
+{
+public:
+Cat(int age):itsAge(age) {HowManyCats++;}
+Virtual ~Cat(){HowManyCats--;}
+Virtual int GetAge(){return itsAge;}
+Virtual void SetAge(int age) {itsAge = age;}
+//static int HowManyCats;
+Static int GetHowMany(){return HowManeCats;}
+private:
+int itsAge;
+static int HowManyCats;
+};
+int cat::HowNamyCats = 0;
+Void tele();
+Int main()
+{
+Const int MaxCats = 5;
+Int i;
+Cat* CatHouse[MaxCats];
+for(i = 0; i < MaxCats; i++)
+{
+CatHouse[i] = new Cat(i);
+}
+For(i = 0; i < MaxCats; i++)
+{
+cout<<”THere are”;
+cout<<Cat::HowManyCats;
+cout<<”cats left!\n”;
+cout<<”Deleting the one which is”;
+cout<<CatHouse{i}->GetAge();
+cout<<”years old\n”;
+Delete CatHouse[i];
+CatHouse[i] = 0;
+}
+return 0;
+}
+Void tele()
+{
+cout<< “THere are” << Cat::GetHowMany() << “Cats alive!\n”;
+}
+
+面试例题3：找出下面程序的错误，并解释它为什么是错的。
+#include<iostream>
+using namespace std;
+class Year{
+int y;
+const int InitY = 1970;
+public:
+Year():{ y = InitY };
+int year() const{ return y;};
+void add_year(int i) {y = year() + i};
+};
+void main()
+{
+Year y1;
+Year* const py1 = new Year();
+y1.add_year(1);
+py1->add_year(2);
+cout<<y1.year() << “,” << py1->year() << endl;
+return;
+}
+解析：这道程序题存在着成员变量问题。
+答案：
+#include<iostream>
+using namespace std;
+class Year{
+int y;
+static const int InitY = 1970; //错误1
+public:
+Year():{y = InitY;}; //错误2没有分号
+int year() const{ return y;};
+void add_year(int i) {y = year() + i};
+};
+int main() //错误3 在C++中不允许mai()的返回值为void
+{
+Year y1;
+Year* const py1 = new Year();
+y1.add_year(1);
+py1->add_year(2);
+cout<<y1.year() << “,” << py1->year() << endl;
+return;
+}
+
+面试例题4： 这个类声明正确吗？为什么？
+class A
+{
+Const int Size = 0;
+}
+解析：这道程序体存在着成员变量问题。常量必须在构造函数的初始化列表里面初始化或者将其设置成static。
+答案：
+正确的程序如下：
+class A
+{
+A() { const int Size = 9; }
+};
+或者：
+class A
+{
+A() { static const int Size = 9; }
+};
+
+面试例题5：析构函数可以是内联函数么？
+解析：我们可以先构造一个类，让它的析构函数是内联函数，如下所示：
+#include <iostream>
+using namespace std;
+calss A
+{
+public:
+void foo() { cout<< ”A”; };
+~A();
+};
+inline A::~A() { cout<<”inline”; 
+int main()
+{
+A* niu = new A();
+niu->foo();
+delete niu;
+return 0;
+}
+该程序可以正确编译并得出结果。
+答案：析构函数可以是内联函数。
+
+10.4构造函数和析构函数
+面试例题1：MFC类库中，CObject类的重要性不言自明。在CObject的定义中，我们看到一个有趣的现象，即CObject的析构函数是虚拟的。为什么MFC的编写者认为virtual destructors are necessary（虚拟的析构函数是必要的）？
+解析：我们可以先构造一个类如下：
+calss CBase
+{
+public:
+~CBase(){....};
+...
+};
+calss CChild : public CBase
+{
+public :
+~CChild(){...};
+...
+};
+
+main()
+{
+child c;
+...
+return 0;
+}
+上段代码在运行时，由于在生成CChild对象 c 时，实际上在调用CChild类的构造函数之前必须首先调用其基类CBase的构造函数，所以当撤销c时，也会在调用CChild类析构函数之后，调用CBase类的析构函数析（构函数调用顺序与构造函数相反）。也就是说，无论析构函数是不是虚函数，派生类对象被撤销时，肯定会依次上调其基类的析构函数。
+那么为什么CObject类要搞一个虚的析构函数呢？
+因为多态的存在。
+仍以上面的代码为例，如果main()中有如下代码：
+CBase* pBase;
+CChild c;
+pBase = &c;
+那么在pBase指针被撤销时，调用的是CBase的析构函数还是CChild的呢？显然是CBase的（静态联编）析构函数。但如果把CBase类的析构函数改成virtual型，当pBase指针被撤销时，就会先调用CChild类构造函数，再调用CBase类构造函数。
+答案：在这个例子里，所有对象都存在于栈框中，当离开其所处的作用域时，该对象会被自动撤销，似乎看不出什么大问题。但是试想，如果CChild类的构造函数在堆中分配了内存，而其析构函数又不是virtual型的，那么撤销pBase时，将不会调用CChild::~CChild()，从而不会释放CChild::CChild()占据的内存，造成内存泄漏。
+将CObject的析构函数设为virtual型，则所有CObject类的派生类的析构函数都将自动变为virtual型，这保证了在任何情况下，不会出现由于析构函数未被调用而导致的内存泄漏。这才是MFC将CObject::~CObject()设为virtual型的真正原因。
+
+面试例题2:：析构函数可以为virtual型，构造函数则不能，那么为什么构造函数不能为虚呢？
+答案：虚函数采用一种虚调用的办法，虚调用是一种可以在只有部分信息的情况下工作的机制，特别允许我们调用一个只知道接口而不知道其准确对象类型的函数。但是如果要创建一个对象，你势必要知道对象的准确类型，因此构造函数不能为虚。
+
+面试例题3：如果虚函数是非常有效的，我们是否可以把每个函数都声明为虚函数？
+答案：不行，这是因为虚函数是有代价的：由于每个虚函数的对象都必须维护一个V表，因此在使用虚函数的时候都会产生一个系统开销。如果仅是一个很小的类，且不想派生其他类，那么根本没必要使用虚函数。
+
+10.5拷贝口燥函数和赋值函数
+面试例题1：编写类String的构造函数、析构函数和赋值函数。
+答案：
+已知类String的原型为：
+class string
+{
+public:
+Sting(const char* str = nullptr); //普通的构造函数
+String(const String &other); //拷贝构造函数
+~String(void); //析构函数
+String & operate = (const String &other); //赋值函数
+private;
+Char* m_data; //用于保存字符串
+};
+编写String的上述4个函数。
+（1）String的析构函数
+为了防止内存泄漏，我们还需要定义一个析构函数。当一个String对象超出它的作用域时，这个析构函数将会释放它所占用的内存。代码如下：
+String::~String(void)
+{
+deleta [] m_data;
+//由于m_data时内部数据类型，也可以写成delete m_data;
+}
+（2）String的构造函数
+这个析构函数可以帮助我们根据一个字符串常量创建一个MyString对象。这个构造函数首先分配了足量的内存，然后把这个字符串常量复制到这块内存，代码如下：
+String::String(const char* str)
+{
+If(str == nullptr)
+{
+m_data = new char[1]; //若能加nullptr判断则更好
+*m_data = “\0”;
+}
+else
+{
+int length = strlen(str);
+m_data = new char[length + 1]; //若能加nullptr判断则更好
+strcpy(m_data, str);
+}
+}
+Strlen函数返回这个字符串常量的实际字符数（不包括NULL终止符），然后把这个字符串常量的所有字符赋值到我们在String对象创建过程中为m_data数据成员新分配的内存中。有了一个构造函数后，我们可以向下面这样根据一个字符串常量创建一个新的String对象：
+string str( “hello” );
+（3）Strin的拷贝构造函数
+所有需要分配系统资源的用户自定义类型都需要一个拷贝构造函数，这样我们可以使用这样的声明：
+MyString s1(hello);
+MyString s2 = s1;
+拷贝构造函数还可以帮助我们在函数调用中以传值方式传递一个MyString参数，并且在当一个函数以值的形式返回Mystring对象时实现“返回时复制”。
+String::String(const String &other)
+{
+int length = strlen(other.m_data);
+m_data = new char[length + 1];
+strcpy(m_data,other.m_data);
+}
+（4）String的赋值函数
+赋值函数可以实现字符串的传值活动：
+MyString s1(hello);
+MyString s2;
+s1 = s2;
+代码如下：
+String& String::operate = (const String &other)
+{
+//检查自赋值
+if(this == &other)
+return *this;
+//释放原有的内存资源
+delete [] m_data;
+//分配新的内存资源，并复制内容
+int length = strlen(other.m_data);
+m_data = new char[length + 1];
+strpy(m_data,other.m_data);
+//返回本对象的引用
+return *this;
+}
+
+面试例题2：下面关于拷贝构造函数的说法哪一个时正确的？
+A. 给每一个对象拷贝一个构造函数。
+B. 有一个默认的拷贝构造函数。
+C. 不能拷贝队列。
+D. 以上结果都正确。
+解析：拷贝函数问题
+答案：B
+
+面试例题3：下面所列举的类哪个不需要拷贝构造函数？
+A. 一个矩阵类：动态分配，对象的建立是利用构造函数，删除是利用析构函数。
+B. 一个花名册类：每一个对象对照着唯一的ID。
+C. 一个word类，对象是字符串类和模板类。
+D. 一个图书馆类：由一系列书籍对象构成。
+解析：按照题意，寻找一个不需要拷贝构造函数的类。
+A 选项要定义拷贝构造函数。
+B 选项中，不自定义拷贝构造函数的话，势必造成两个对象的ID不唯一。至于说自定义了拷贝构造函数之后，如何保证新对象的ID唯一，那是实现的问题。实现的方法有多种多样，比如可以使用当前的系统tick数作为新ID。当然语义上有损失，不是完全意义上的拷贝，但在这儿只能在保持语义和实现目的之间来一个折中。
+选C的原因是使用默认的拷贝构造，string子对象和vector子对象的类都是成熟的类，都有合适的赋值操作，拷贝构造函数以避免“浅拷贝”问题。
+D选项显然是定义拷贝构造函数。
+答案：C。
+
+面试例题4：哪个子类的虚函数重新声明时正确的？
+A. Base* Base::copy(Base*);
+  Base* Derived::copy(Derived*);
+B. Base* Base::copy(Base*);
+  Derived* Derived::copy(Derived*);
+C. ostream& Base::print(int, ostream& = cout);
+ 	   ostream& Derived::print(int, ostream&);
+D. Void Base::eval() const;
+   Void Derived::eval();
+解析：本题问的是哪个派生类的虚函数再声明是对的。
+A是重载；B会导致编译错误，C是真正的多态；D是重载。
+B选项在gcc测试下也可以算是一种多态，覆盖的虚函数必须返回与父类的同名函数一致的类型。Derived class的虚函数的返回类型可以是base class中对应虚函数的返回类型的public derived class。所谓多态指针的一致是指“子类虚函数返回的多态指针的静态类型是父类虚函数所返回的多态指针的动态类型集合中的某个类型”。
+答案：C。
+
+10.6 多态的概念
+面试例题1：什么是多态？
+答案：开门，开窗户，开电视。在这里的“开”就是多态！
+多态性可以简单的概括为“一个接口，多种方法”，在程序运行的过程中才决定调用的函数。多态性是面向对象编程领域的核心概念。
+多态，按字面的意思就是“多种形状”。多态性是允许你将父对象设置为和它的一个或更多的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作。简单地说，就是一句话：允许将子类类型的指针赋值给父类类型的指针。多态性在Object Pascal 和 C++中都是通过虚函数实现的。
+
+面试例题2：重载和覆盖有什么不同？
+答案：虚函数总在派生类中被改写，这种改写被称为“override”（覆盖）。
+Override是指派生类重写基类的虚函数，就像我们前面在B类中重写了A类中的foo()函数。重写的函数必须有一致的参数表和返回值（C++标准允许返回值不同的情况下，但是很少有编译器支持这个特性）。Override这个单词好像一直没有什么合适的中文词汇来对应。有人译为“覆盖”，还贴切一些。
+Override约定成俗的被翻译为“重载”，是指编写一个与已有函数同名但是参数表不同的函数。例如一个函数既可以接受整型作为参数，也可以接受浮点类型作为参数。重载不是一种面向对象编程，而只是一种语法规则，重载与多态没有什么直接关系。
+
+11.1覆盖
+面试例题1：以下代码的输出结果是什么？
+	#include<iostream>
+	using namespace std;
+	class Parent
+	{
+		public:
+			virtual void foo()
+		{
+			cout << “foo from Parent”;
+}
+void fool()
+{
+cout << “fool from Parent”;
+}
+};
+class Son: public Parent
+{
+void foo()
+{
+cout << “foo from Son”;
+}
+void fool()
+{
+cout << “fool from Son”;
+}
+};
+int main()
+{
+parent* p = new Son();
+P->foo();
+P->fool();
+return 0;
+}
+A. foo from Parent fool from Son
+B. foo from Son fool from Parent
+C. foo from Son fool from Son
+D. Cannot complie
+解析：这是一个典型的覆盖问题。Parent类里的foo函数是函数，虚函数是被子类同名函数所覆盖的。而Parent类里的foo函数是l一个普通函数，不会被子类同名函数所覆盖。P是一个指针，指向的是对象。由于Parent类里的foo函数被Son类里的foo函数所覆盖，所以结果是foo from Son。
+答案：B。
+
+面试例题2：以下代码的输出结果是什么？
+#include <iostream>
+using namespace std;
+class A
+{
+public:
+void virtual f()
+{
+cout << “A” << endl;
+}
+};
+class B : public A
+{
+public:
+void virtual f()
+{
+cout << “B” << endl;
+}
+};
+int main()
+{
+A* pa = new A();
+pa->f();
+B* pb = (B*)pa;
+pb->f();
+delete pa,pb;
+pa = new B();
+pa->f();
+pb = (B*)pa;
+pb->f();
+};
+A. AABA		B. AABB		C. AAAB		D. ABBA
+解析：这是一个虚函数覆盖函数的问题。A类里的f函数是一个虚函数，虚函数是被子类同名函数所覆盖的。而B类里的f函数也是一个虚函数，它覆盖A类f函数的同时，也会被它的子类覆盖。但是在B* pb = (B*)pa里面，该语句的意思是转化pa为B类型并新建一个指针pb，将pa复制到pb。但这里有一点请注意，就是pa的指针始终没有发生变化，所以pb也指向pa的f函数。这里并不存在覆盖的问题。
+delete pa,pb;删除了pa和pb所指向的地址，但pa、pb指针并没有删除，也就是我们通常说的悬浮指针。现在重新给pa指向新地址，所指向的位置是B类的，而pa指针类型是A类的，所以就产生了一个覆盖。Pa->f();的值就是B。
+Pb = (B*)pa;转化pa为B类指针给pb赋值，但pa所指向的f函数是B类的f函数，所以pb所指向的f函数是B类的f函数。Pb->f();的值是B。
+答案：B。
+
+11.2私有继承
+面试例题1：公有继承和私有继承的区别是什么？
+A. 没有区别。
+B. 私有继承使父类中所有元素变成私有。
+C. 私有继承使父类中的函数转化成私有。
+D. 私有继承使父类中所有元素无法与子类联系。
+解析：A肯定错。
+因为子类只能继承父类的protected和public，所以B也是错的。
+C的叙述不全面，而且父类可能有自己的私有方法成员，所以也是错误的。
+答案：D。
+
+面试例题2：请考虑标记为A到J的语句再编译时可能出现的情况。如果能够成功编译，请记为”RIGHT”，否则记为”ERROR”。
+#include <iostream>
+#include<stdio.h>
+class Parent
+{
+public:
+Parent(int var = -1)
+{
+m_nPub = var;
+m_nPtd = var;
+m_nPrt = var;
+}
+public:
+int m_nPub;
+protected:
+int m_nPtd;
+private:
+int m_nPrt;
+};
+class Child1 : public Parent
+{
+public:
+int GetPub() {return m_nPub};
+int GetPtd() {return m_nPtd};
+int GetPrt() {return m_nPrt};		//A
+};
+class Child2 : protected Parent
+{
+public:
+int GetPub() {return m_nPub};
+int GetPtd() {return m_nPtd};
+int GetPrt() {return m_nPrt};		//B
+};
+class Child3 : privateParent
+{
+public:
+int GetPub() {return m_nPub};
+int GetPtd() {return m_nPtd};
+int GetPrt() {return m_nPrt};		//C
+};
+Int main()
+{
+Child1 cd1;
+Child2 cd2;
+Child3 cd3;
+int nVar = 0;
+//public inherited
+cd1.m_nPub = nVar;	//D
+ca1.m_nPtd = nVar;		//E
+nVar = ca1.GetPtd();	//F
+//protected inherited
+ca2.m_nPub = nVar;	//G
+nVar = cd2.GetPtd();	//H
+//private inherited
+ca3.m_nPub = nVar;	//I
+nVar = cd3.GetPtd;		//J
+return 0;
+}
+解析：
+A、B、C都是错误的，因为m_nPrt时父类Parent的私有变量，所以不能被子类访问。
+D正确。Cd1时公有继承，可以访问并改变父类的公有变量。
+E错误。M_nPtd是父类Parent的保护变量，可以被公有继承的cd1访问，但不可以修改。
+F正确。可以通过函数访问父类的保护变量。
+G错误。Cd2是保护继承的，不可以直接修改父类的公有变量。
+H正确。可以通过函数访问父类的保护变量。
+I错误。Cd3是私有继承的，不可以直接修改父类的公有变量。
+J正确。可以通过函数访问父类的保护变量。
+答案：
+A、B、C、E、G、I是错误的。
+D、F、H、J是正确的。
+
+11.3虚函数继承和虚继承
+面试例题1：下面程序的结果是什么？
+#include<iostream>
+#include<memory.h>
+#include<assert.h>
+using namespace std;
+calss A
+{
+char k[3];
+public:
+virtual void aa(){};
+};
+class B : public virtual A
+{
+char j[3];
+//加入一个变量是为了看清楚class中的vfptr放在什么位置
+public:
+virtual void bb(){};
+};
+class C : public virtual B
+{
+char i[3];
+public:
+virtual void cc() {};
+};
+int main(int argc, char* argv[])
+{
+cout << “Sizeof(A)：” << sizeof(A) << endl;
+cout << “Sizeof(B)：” << sizeof(B) << endl;
+cout << “SizeofCA)：” << sizeof(C) << endl;
+return 0;
+}
+解析：C++2.0以后全面支持虚函数继承。这个特性的引入为C++增强了不少功能，也引入了不少烦恼。如果能够了解编译器是如何实现虚函数继承，它们在类的内存空间中又是如何布局的，就可以对C++的了解深入不少。
+（1）对于class A，由于有一个虚函数，那么必须得有一个对应的虚函数表记录对应的函数入口地址。每个地址需要标有一个虚指针，指针的大小为4。类中还有一个char k[3]，每一个char值所占位置是1，所以char k[3]所占大小是3.做一次数据对齐后（编译器里一般以4的倍数为对齐单位），char k[3]所占大小变为4。Sizeof(A)的结果就是char k[3]所占大小4和虚指针所占大小4，三者之和等于8。
+（2）对于class B，由于class B虚继承了class A，同时还拥有自己的虚函数，那么class B中首先拥有一个vfptr_B，指向自己的虚函数表。还有char j[3]，大小为4。可虚继承该如何实现？首先要通过加入一个虚类指针来指向其父类，然后还要包含父类的所有内容。有些复杂了，不过还不难想象。Sizeof(B)的结果就是char k[3]所占大小4和虚指针vfptr_B所占大小4家sizeof(A)所占大小8，三者之和等于16.
+（3）下面是class C了，class C首先也得有个vfptr_C，然后是char i[3]，然后是sizeof(B),所以sizeof(C)的结果就是char i[3]所占大小4和虚指针vfptr_C所占大小4加sizeof(B)所占大小16，三者之和等于24。
+答案：再gcc中打印上面几个类的大小，结果为8、16、24。
+
+面试例题2：什么是虚继承？它与一般的继承有什么不同？它有什么用？写出一段虚继承的C++代码。
+答案：虚拟继承是多重继承中特有的概念。
+虚拟基类是为解决多重继承而出现的。
+代码如下：
+class A;
+class B : public virtual A; //virtual inheritance.
+class C : public virtual A;
+class D : public B, public C;
+注意：虚函数继承和虚继承是完全不同的两个概念，请不要在面试中混淆。
+
+面试例题3：如果一个圆角矩形有直边和圆角，那么圆角矩形也就多重继承了圆形和矩形，而圆形和矩形又都是从shape类里继承的。请问：当你创建一个圆角矩形类时，共创建了多少个shape？
+答案：如果圆形类和矩形类都不是用关键字virtual继承shape类，那么生成两个shape：一个为圆形类，一个为矩形类。如果圆形类和矩形类都是用关键字virtual继承shape类，那么生成一个共享的shape。
+
+11.4多重继承
+面试例题1：请评价多重继承的优点和缺陷。
+答案：
+多重继承在语言上并没有什么很严重的问题，但是标准本身只对语义做了规定，而对编译器的细节没有做规定。所以在使用时（即使是继承），最好不要对内存布局等有什么假设。此类的问题还有虚析构函数等。为了避免由此带来的复杂性，通常推荐使用复合。但是，在《C++设计新思维》一书中对多重继承和模板有极为精彩的运用。
+	（1）多重继承本身并没有问题，如果运用得当可以收到事半功倍的效果。不过大多数系统的类层次往往有一个公共的基类，就像MFC中的Cobject，Java中的object。而这样的结构如果使用多重继承，稍有不慎，将会出现一个严重现象——菱形继承，这样的继承方式会使得类的访问结构非常复杂。但并非不可处理。可以用virtual继承（并非唯一方法）及Loki库中的多继承框架来掩盖这些复杂性。
+（2）从哲学上来说，C++多重继承必须要存在，这个世界本来就不是单根的。从实际用途上来说，多重继承不是必需的，但这个世界上有多少东西是必需的呢？对象不过是一组有意义的数据集合及其上的一组有意义的操作，虚函数也不过是一堆函数入口表，重载也不过是函数名扩展，这些东西都不是必需的，而且它们的不当使用都会带来问题。但是没有这些东西行吗？很显然。不行、
+（3）多重继承在面向对象理论中并非是必要的——因为它不提供新的语意，可以通过单继承与复合结构来取代。而Java则放弃了多重继承，使用简单的interface取代。多重继承是把双刃剑，应该正确地对待。况且，它不像goto，不破坏面向对象语义。跟其他任何威力强大的东西一样，用好了会带来代码的极大精简，用坏了那就不用说了。
+C++是为实用而设计的，在语言里有很多东西存在着各种各样的“缺陷”。所以，对于这种有“缺陷”的东西，它的优劣就要看使用它的人。C++不回避问题，它只是把问题留给使用者，从而给大家更多的自由。像Ada、Pascal这类定义严格的语言，从语法上回避了问题，但并不是真正的解决了问题，而使人做很多事时束手束脚。
+（4）多重继承本身并不复杂，对象布局也不混乱，语言中都有明确的定义。真正复杂的使用了运行时多态的多重继承。为什么非要说多重继承不好呢？如果这样的话，指针不是更容易出错，运行时多态不是更不好理解吗？
+因为C++中没有interface这个关键字，所以不存在所谓的“接口”技术。但是C++可以
+很轻松地做到这样的模拟，因为C++中的不定义属性的抽象类就是接口。
+
+面试例题2：找出下面程序的错误，并解释它为什么是错的。
+#include<iostream>
+using namespace std;
+class Base
+{
+public:
+int val;
+Base() { val = 1; };
+};
+class Derive : Base
+{
+public:
+int val;
+Derive(int i) { val = Base::val + i; };
+};
+int main(int, char**, char**)
+{
+Derive d(10);
+cout << d.Base::val << endl << d.val << endl;
+return 0;
+}
+答案：把class Derive:Base改成class Derive : public Base
+解析：这是个类继承问题。如果不指定public，C++默认的是私有继承。私有继承是无法继承并使用父类函数中的公有变量。
+
+面试例题3：找出下列程序的错误，并解释它为什么是错的。
+class base
+{
+private：
+int i;
+public:
+base(int x) { i = x;}
+};
+class derived : public base
+{
+private：
+int i;
+public:
+derived (int x, int y) { i = x;}
+boid printTotal() { int total = i + base::i;}
+};
+解析：要在子类中设定初始成员变量，把derived(int x, int y)改成derived(int x, int y) : base(x)。
+class base
+{
+protected：  //这里的访问属性从私有改成受保护的
+int i;
+public:
+base(int x) { i = x;}
+};
+class derived : public base
+{
+private：
+int i;
+public:
+derived (int x, int y) : base(x)
+ {
+ i = x;
+}
+void printTotal() { int total = i + base::i;}
+};
+
+11.6纯虚函数
+面试例题1：下面的程序有何错误？
+#include<iostream>
+using namespace std;
+class Shape
+{
+public:
+Shape(){}
+~Shape(){}
+virtual void Draw () = 0;
+};
+int mian()
+{
+Shape s1;
+}
+解析：因为Shape类中的Draw函数是一个纯虚函数，所以Shape类是不能实例化一个对象的。Shape s1；是不可以的，解决方法是把Draw函数修改成一般的虚函数。
+答案：修改后的代码如下：
+#include<iostream>
+using namespace std;
+class Shape
+{
+public:
+Shape(){}
+~Shape(){}
+virtual void Draw () { };
+};
+int mian()
+{
+Shape s1;
+}
+
+面试例题2：什么是虚指针？
+答案：虚指针或虚函数指针是一个虚函数的实现细节。带有虚函数的类中的每一个对象都有一个虚指针指向该类的虚函数表。
+
+面试例题3：声明一个类Vehicle，使其成为抽象数据类型。写出类Car和Bus的声明，其中每个类都从类Vehicle里派生。使Vehicle成为一个带有两个纯虚函数的ADT，使Car和Bus不是ADT。
+答案：
+class Vehicle
+{
+public：
+virtual void Move() = 0;
+virtual void Haul() = 0;
+};
+class Car : public Vehicle
+{
+public:
+virtual void Move();
+virtual void Haul();
+}
+class Bus: public Vehicle
+{
+public:
+virtual void Move();
+virtual void Haul();
+}
+
+面试例题4：虚函数的入口地址和普通函数有什么不同？
+答案：每个虚函数都在vtable中占了一个表项，保存着一个跳转到它的入口地址的指令。当一个包含虚函数的对象被创建的时候，它在头部附加一个指针，指向vtable中相应的位置。调用虚函数的时候，不管你是用什么指针调用的，它先根据vtable找到入口地址再执行，从而实现了“动态联编”。而不像普通函数那样简单地跳转到一个固定地址。
+
+面试例题5：
+1. C++中如何阻止一个类被实例化？
+2. 一般在什么时候构造函数被声明成private呢？
+3. 什么时候编译器会生成默认的copy constructor呢？
+4. 如果你已经写了一个构造函数，编译器还会生成copy constructor吗？
+答案：
+1. 使用抽象类，或者构造函数被声明成private。
+2. 比如要阻止编译器生成默认的copy constructor的时候。
+3. 只要自己没写，而程序中需要，都会生成。
+4. 会。
+
+14.1整数字符串转化
+面试题1：怎样将整数转化成字符串，并且不用函数itoa。
+解析：整数转换成字符串，可以采用加’0’，在逆序的办法，整数加’0’就会隐性转化成char类型的数。
+答案：代码如下
+#include<iostream>
+#include<stdio.h>
+int main(void)
+{
+int num = 12345, j = 0, i = 0;
+char temp[7], str[7];
+while(num)
+{
+temp[i] = num%10+’0’;
+i++;
+num = num / 10;
+}
+temp[i] = 0;
+printf(“ temp = %s\n”, temp);
+I = i - 1;
+printf(“ temp = %d\n”, i);
+//刚刚转化的字符串是逆序的，必须把它反转过来
+while(i >= 0)
+{
+str[j] = temp[i];
+j++;
+i--;
+}
+srr[j] = 0;
+printf(“string = %s\n”, str);
+return 0;
+}
+扩展知识（使用itoa）
+#include<iostream>
+#include<stdio.h>
+int main(void)
+{
+int number = 12345;
+char string[7];
+itoa(number, string, 10);
+printf(“integer = %d string = %c\n”, number, string[1]);
+return 0;
+}
+
+面试例题2：编程实现字符串数转化成整数的办法。
+解析：字符串转化成整数，可以采用减’0’再乘10累加的办法，字符串减’0’就会隐性转化成int类型的数。
+答案：程序代码如下
+#include<iostream>
+#include<stdio.h>
+int main(void)
+{
+int num = 12345, j = 0, i = 0, sum = 0;
+char temp[7] = {‘1’, ‘2’, ‘3’, ‘4’, ‘5’, ‘\0’}, str[7];
+while(temp[i])
+{
+sum = sum *10 + (temp[i] - ‘0’);
+i++;
+}
+printf(“ sum = %d\n”, sum);
+return 0;
+}
+
+面试例题3：已知strcpy函数的原型是char* strcpy(char* strDest, const char* strSrc);，其中sreDest是目的字符串，strSrc是源字符串。
+（1）不调用C++的字符串库函数，请编写函数strcopy。
+（2）Strcpy能把strSrc的内容复制到strDest，为什么还要char* 类型的返回值？
+解析：字符串拷贝函数问题。
+（1）char* strcpy(char* strDest, const char* strSrc)
+{
+assert((sreDest != NULL) && (strSrc != NULL));
+char* address = strDest;
+while((*strDest++ = *strSrc++) != ‘\0’);//NULL
+return address;
+}
+（2）为了实现链式表达式，返回具体值。
+例如：int length = srelen(strcpy(strDest, “hello world”));
+
+面试例题4：下面的程序会出现何种问题？
+#include<iostream>
+#include<stdio.h>
+int main(void)
+{
+char s[] = “123456789”;
+char d[] = “123”;
+
+strcpy(d,s);
+printf(“%s, \n%s”, d,s);
+return 0;
+}
+解析：以上程序输出结果是：123456789,56789。
+没经验的程序员一定会再此大跌眼镜的，源字符串竟然被截掉了一部分，截掉的长度刚好是目标字符串原来的长度。至于原因，应该设计当初分配的内存地址是连续内存的问题，原来是1234\0123456789\0，strcpy后变成了123456789\06789\0。所以在分配空间的时候要给源字符串和目标字符串留足够的空间。
+把目标字符串定义在前，源字符串定义在后，虽然可以看到正确的输出结果：123456789,123456789。但会产生一个运行期错误，原因估计是越过了目标字符串的实际空间，访问到了不可预知的地址了。
+微软在这里是写的非常简单的，代码如下：
+char* odecl strcpy(char* des, const char* src)
+{
+char* cp = dst;
+while(*cp++ = *src++)
+return (dst);
+}
+微软为什么这么写？它这样安全漏洞太多了，所以必须预先为目标字符串配足够的空间，并且使用这个函数的时候得小心翼翼才行。
+为了提高性能，减去那些啰嗦的安全检查是必要的。况且程序员在使用时应该知道哪些条件下会发生访问违例，这种做法就是把责任推给了程序员，让他来决定安全与性能的取舍。
+答案：123456789,56789。
+拷贝函数的一个完整的标准写法如下：
+#include<stdio.h>
+#include<malloc.h>
+#include<assert.h>
+#include<string>
+void stringcpy(char* to, const char* from)
+{
+assert(to != nullptr && from != nullptr)
+while(*from != ‘\0’)
+{
+*to++ = *from++;
+}
+*to = ‘\0’;
+}
+int main(void)
+{
+char *f;
+char *t;
+f = (char*)malloc(15);
+t = (char*)malloc(15);
+stringcpy(f, “asdfghjkl”);
+stringcpy(t,f);
+printf(“%s\n”, f);
+printf(“%s\n”, t);
+return 0;
+}
+
+面试例题5：串拷贝（strcpy）和内存拷贝（memcpy）有什么不同？它们适合于在哪种情况下使用？
+答案：strcpy()函数只能拷贝字符串。Strcpy()函数将源字符串的每个字节拷贝到目的字符串中。当遇到字符串末尾的NULL字符(\0)时，它会删去改字符，并结束拷贝。
+Memcpy()函数可以拷贝任意类型的数据。因为并不是所有的数据都以NULL字符结束，所以要为memcpy()函数指定要拷贝的字节数。
+在拷贝字符串时，通常使用strcpy()函数；在拷贝其他数据时，通常使用memcpy()函数。
+
+面试例题6：请写出一个函数来模拟memcpy()函数。
+答案：标准代码如下：
+#include<iostream>
+#include<memory.h>
+#include<assert.h>
+Using namespace std;
+//自己编写的memcpy算法
+void *memcpy2(char* pvTo, char* pvFrom, size_t size)
+{
+assert((pvTo != nullptr) && (pvFro, != nullptr)); //使用断言
+char* pbTo = pvTo;//防止改变pvTo的地址
+char* pbFrom = pvFrom; //防止改变pvFrpm的地址
+while(size-- > 0)
+{
+*pbTo++ = *pbFrom++;
+}
+return pvTo;
+}
+int main(int argc, char* argv[])
+{
+char Str1[] = “one tow three”;
+char str2[81];
+char ptr1[] = “one two three”;
+char ptr2[81];
+memcpy(Str2,Str1,7);
+memcpy(ptr2,ptr1,7);
+cout << “Sourse string: ” << endl;
+cout << “  ” << Str1 << endl;
+cout << “Destination string:  ” << endl;
+cout << “  ” << Str2 << endl;
+
+cout << “Sourse string: ” << endl;
+cout << “  ” << ptr1 << endl;
+cout << “Destination string:  ” << endl;
+cout << “  ” <<ptr2 << endl;
+}
+
+14.3数组越界
+面试例题1：下面的程序有何缺点？
+#define MAX 255
+int main()
+{
+unsigned char A[MAX],i;
+for(i = 0; i <= MAX;i++)
+{
+A[i] = i;
+}
+return 0;
+}
+解析：典型的数组越界问题。For循环执行了256次，而数组A只有255个元素。
+答案：将循环控制条件i <= MAX 改为 i < MAX即可。
+
+面试例题2：找出下面程序的错误，并解释它为什么是错的。
+void test1()
+{
+char string[10];
+char* str1 = “0123456789”;
+strcpy(string,str1);
+std::cout << string << ‘\n’;
+}
+void test2()
+{
+char string[10],str1[10];
+for(int i = 0; i < 10; i++)
+{
+str1[i] = ‘a’;
+}
+strcpy(string,str1);
+std::cout << string << ‘\n’;
+}
+void test3(char* str1)
+{
+char string[10];
+if(strlen(str1) <= 10)
+{
+strcpy(string, str1);
+}
+std::cout << string << ‘\n’;
+}
+解析：字符数组和strcpy问题。
+字符数组并不要求最后一个字符为’\0’。是否需要加入’\0’，完全由系统需要决定。但是字符数组的初始化要求最后一个字符必须为’\0’，所以test2虽然能够编译通过，但是会出现运行时错误。类似于char c[5] = {‘C’, ‘h’, ‘i’, ‘n’, ‘a’}这样的定义是错误的。
+答案：
+void test1()
+{
+char string[10];
+char* str1 = “0123456789”;
+strcpy(string,str1);
+std::cout << string << ‘\n’;
+}
+void test2()
+{
+char string[10],str1[10];
+for(int i = 0; i < 9; i++) //错误1
+{
+str1[i] = ‘a’;
+}
+Str1[9] = ‘\0’;
+strcpy(string,str1);
+std::cout << string << ‘\n’;
+}
+void test3(char* str1)
+{
+char string[10];
+if(strlen(str1) <= 10)
+{
+strcpy(string, str1);
+}
+std::cout << string << ‘\n’;
+}
+int main()
+{
+test1();
+test2();
+char* str = “0123456789”;
+test3(str);
+return 0;
+}
+
+面试例题3：下面语句的输出是什么
+char a = 256;
+int d = a;
+printf(“%d”, d+1);
+A. -1		B. 1		C.257		D. 0
+解析：char数值溢出问题。Char类型的变量赋值范围是0~255.当把256赋值给a后，超出了a的有效取值范围，此时a的实际值为0.
+答案：B。
+
+
+面试例题2：下面哪个数组的声明时正确的？
+A. int a[];	B. int n = 10, a[n]	C. int a[10 + 1] = {0};	D. int a[3] = {1,2,3,4};
+解析：数组定义问题。
+int a[]是错误的，不允许建立空数组。
+int a[3] = {1,2,3,4};会造成越界问题，因此不允许。
+答案：B,C。
+
+14.5字符串其他问题
+面试例题1：输入一个数，测试其是否是回文数。
+解析：建立数组，按位存储。比较首位和末位是否相同。如不同，则不是回文数。相同则继续比较，首位递增，末位递减，直到首位不再是小于末位。
+答案：完整代码如下
+#include<iostream>
+using namespace std;
+int main()
+{
+int j = 10, k = 12321, p,a[10], ss, i = 0, begin , end;
+cout << “please input” << endl;
+cin >> k;
+p = k;
+while(p)
+{
+ss = p % 10;
+a[i] = ss;
+p = p /10;
+i++;
+}
+begin = 0;
+end = i -1;
+while(begin < end)
+{
+if(a[begin] != a[end])
+Break;
+else
+{
+begin++;
+end--;
+}
+}
+if(begin < end)
+{
+cout<< “false” << endl;
+}
+else
+{
+cout<< “true” << endl;
+}
+cout << “i” << i << endl;
+cout << k;
+retrurn 0;
+}
+
+面试例题2：将字符串“askdaskaskdaskg”删除指定字符ask，删除后的结构是“ddg”。
+解析：删除的最好办法就是把不删除的东西提取出来。
+答案：完整代码如下
+#include<stdio.h>
+#include<string>
+#include<conio.h>
+int main()
+{
+char uu[20], *p, *sub = “ask”, *str = “askdaskaskdaskg”, *str2;
+int n = 0, i = 0, v;
+p = sub;
+str2 = str;
+while(*str2)
+{
+while(*p)
+{
+if(*p == *str2)
+{
+break;
+}
+p++;
+}
+if(*p == ‘\0’)
+{
+uu[i] = *str2;
+i++;
+}
+str2++;
+p = sub;
+}
+uu[i] = 0;
+str = uu;
+printf(“\n %s”,str);
+return 0;
+}
+
+面试例题3：请写一个函数来模拟C++中的strstr()函数：该函数的返回值是主串中字符子串的位置以后的所有字符。请不要使用任何C程序已有的函数来完成。
+解析：string字符串问题。做一个程序模拟C++中的strstr()函数。Strstr()函数是把主串中子串及以后的字符全部返回。比如主串是“12345678”，子串是“234”，那么函数的返回值就是“2345678”。
+答案：正确程序如下
+#include<iostream>
+using namespace std;
+const char* strstr1(const char* string, const char* strCharSet)
+{
+	
+	for (int i = 0; string[i] != '\0'; i++)
+	{			
+		int j = 0;
+		int temp = i;
+		if (string[i] == strCharSet[j])
+		{
+			while (string[i++] == strCharSet[j++])
+			{
+				if ((strCharSet[j] == '\0'))
+				{
+					return &string[i - j];    
+				}
+			}
+			i = temp;
+		}
+	}
+	return nullptr;
+}
+int main()
+{
+	char* string = "12345554555123";
+	cout << string << endl;
+	char strCharSet[10] = {};
+	cin >> strCharSet;
+	cout  << strstr1(string, strCharSet) << endl;
+	system("pause");
+	return 0; 
+}
+
+面试例题4：将一句话里的单词进行倒置，标点符号不倒换。比如一句话“i come from XiaMen”倒换后变成“XiaMen from come i”
+解析：解决该问题可以分为两步：第一步全盘置换将该句变成，第二步进行部分翻转，如果不是空格，则开始翻转单词。
+答案：具体代码如下
+#include<iostream>
+#include<stdio.h>
+int main(void)
+{
+int num = -12345, j = 0, i = 0, flag = 0, begin, end;
+char str[] = “i come from XiaMen”,temp;
+j = strlen(str) - 1;
+printf(“string = %s\n”, str);
+//进行全部翻转
+while(j > i)
+{
+temp = str[i];
+str[i] = str[j];
+str[j] = temp;
+j--;
+i++;
+}
+printf(“string = %s\n”, str);
+i = 0;
+//对单独的单词进行翻转
+while(str[i])
+{
+if(str[i] != ‘  ’)
+{
+begin = i;
+while(str[i] && str[i] != ‘  ’)
+{
+i++;
+}
+i = i - 1;
+end = i;
+}
+while(end > begin)
+{
+temp = str[begin];
+str[begin] = str[end];
+str[end] = temp;
+end--;
+begin++;
+}
+i++;
+}
+printf(“string = %s\n”, str);
+return 0;
+}
+
+面试例题5：有100个整数，其中有负数，找出连续3个数之和最大的部分。
+答案：完整代码如下
+#include<iostream>
+using namespace std;
+int main()
+{
+int a[10] = {-3,4,6,8,-9,7,10,-6,20,-9}
+int sum = a[0]+a[1]+a[2]-1, index, i;
+for(i = 0; i <= 7; i++)
+{
+if(sum < a[i] + a[i + 1] + a[i + 2])
+{
+sum = a[i] + a[i + 1] + a[i + 2];
+index = i + 1;
+}
+}
+cout << “\n this is at the” << index << “3 number the sum is largest”;
+return 0;
+}
+
+16.1进程
+面试例题1：请描述进程和线程的差别。
+答案：
+进程是程序的一次执行，而什么是线程呢？线程可以理解为进程中执行的一段程序片段。在一个多任务环境中下面的概念可以帮助我们理解两者的差别。
+进程间是独立的，这表现在内存空间、上下文环境上；线程运行在进程空间内。
+一般来讲，进程无法突破进程边界存取其他进程内的存储空间；而线程由于处于进程空间内，所以同一进程所产生的线程共享同一内存空间。
+同一进程中的两段代码不能够同时执行，除非引入线程。
+线程是属于进程的，当进程退出时该进程产生的线程都会被强制退出并清除。线程占用的资源要少于进程所占用的资源。进程和线程都可以有优先级。
+
+面试例题2：进程间的通信如何实现？
+答案：
+现在最常用的进程间通信方式有：信号，信号量，消息队列，共享内存。
+所谓进程通信，就是不同进程之间进行一些“接触”。这种接触有简单，也有复杂。机制不同，复杂度也不一样、通信是一个广义上的意义，不仅仅指传递一些消息。它们的使用方法是基本相同的，所以只要掌握了一种使用方法，然后记住其他的使用方法就可以了。信号在我学习的内容中，主要接触了信号来实现同步的机制，据说信号也可以用来做其他的事情，但是我还不知道做什么。
+信号和信号量是不同的，它们虽然都可用来实现同步和互斥，但前者是使用信号处理器来进行的，后者是使用P、V操作来实现的。消息队列是比较高级的一种进程间通信方法，因为它真的可以在进程间传送消息，你传送一个“i love you”都可以。
+一个消息队列可以被多个进程所共享；如果一个进程的消息太多，一个消息队列放不下，也可以用多于一个的消息队列。共享消息队列的进程所发送的消息中除了消息本身外还有一个标志，这个标志可以指明该消息将由哪个进程或者是哪类进程接受。每一个共享消息队列的进程针对这个队列也有自己的标志，可以用来声明自己的身份。
+
+面试例题3：在网络编程中设计并发服务器，使用多进程与多线程有什么区别？
+解析：
+进程：子进程是父进程的复制品。子进程获得父进程数据空间、堆和栈的复制品。
+线程：相对于进程而言，线程是一个更加接近于执行体的概念，它可以与同进程的其他线程共享数据，但拥有自己的栈空间，拥有独立的执行序列。
+两者都可以提高程序的并发度，提高程序运行效率和响应时间。
+线程和进程在使用上各有优缺点：线程执行开销小，但不利于资源管理和保护；而进程正相反。同时，线程适合于在SMP机器上运行，而进程则可以跨机器迁移。
+答案：
+用多进程时每个进程有自己的地址空间，线程则共享地址空间。所有其他区别都是由此而来的：
+速度：线程产生的速度快，线程间的通信快、切换快等，因为它们在同一个地址空间内。
+资源利用率：线程的资源利用率比较好也是因为它们在同一个地址空间内。
+同步问题：线程使用公共变量/内存时需要使用同步机制，还是因为它们在用一个地址空间内。
+
+面试例题4：在Windows编程中互斥器的作用和临界区类似，请说一下两者间的主要区别。
+解析：多线程编程问题。
+答案：两者的区别是互斥器可以用于进程之间互斥，临界区是线程之间的互斥。
+
+面试例题5：进程进入等待状态有哪几种方式？
+解析：操作系统问题。
+答案：
+CPU调度给优先级更高的线程，原先线程进入等待状态。
+阻塞的线程获得资源或者信号，进入等待状态。
+在时间片轮转的情况下，如果时间片到了，也将进入等待状态。
+
