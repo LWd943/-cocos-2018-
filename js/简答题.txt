@@ -1,0 +1,215 @@
+1、说说对 prototype和 __proto __ 的理解
+
+【参考答案】prototype是函数才有的属性，prototype本身也是个函数对象；__proto __是所有对象都有的属性，__proto __指向构造它的对象的prototype。例如：
+> var o = new Object()
+o.__proto__ == Object.prototype
+< true
+
+o是Object构造出的对象，o的__proto __指向Object的prototype，这样o可以使用Object.prototype里面的方法。原型链：当js查找对象的属性时，先查找对象自身是否具有该属性，如果没有，就会去__proto __指向的prototype对象上查找，直到找到或者__proto __为null
+
+2、使用构造函数实现一个类Foo，需要有属性 count, 方法bar(), 并且写出创建该类对象的方法
+
+【参考答案】
+function Foo(){
+  this.count = 0;
+}
+
+Foo.prototype.bar = function(){
+}
+
+var foo = new Foo();
+foo.bar();
+
+3、以下代码片段输出是什么，为什么？如果想输出0,1,2请问如何修改？
+var s = [];
+function foo() {
+    for(var i=0; i<3; i++){
+            s[i] = function(){
+                  console.log(i);
+            }
+    }
+}
+foo();
+s[0]();
+s[1]();
+s[2]();
+【参考答案】输出3,3,3。因为foo()函数执行时生成了三个闭包，这三个闭包绑定了同一个变量i，第三个闭包生成时，i的值为3。因此执行这三个闭包时都会输出3。
+修改为输出0,1,2的原则是让三个闭包绑定不同的变量，所以在生成闭包时就要区分出来，一种修改方法如下：
+var s = [];
+function foo() {
+    for(var i=0; i<3; i++){        
+         s[i] = function(index){
+              return function(){
+                  document.write(index);
+              }
+         }(i);
+    }
+}
+foo();
+s[0]();
+s[1]();
+s[2]();
+
+4、undefined与null的区别
+参考答案:
+null是一个表示"无"的对象，转为数值时为0；undefined是一个表示"无"的原始值，转为数值时为NaN
+null表示"没有对象"，即该处不应该有值,典型用法是：
+（1） 作为函数的参数，表示该函数的参数不是对象。
+
+（2） 作为对象原型链的终点。
+undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。典型用法是：
+（1）变量被声明了，但没有赋值时，就等于undefined。
+
+（2) 调用函数时，应该提供的参数没有提供，该参数等于undefined。
+
+（3）对象没有赋值的属性，该属性的值为undefined。
+
+（4）函数没有返回值时，默认返回undefined。
+
+5、列举三种强制类型转换和两种隐式类型转换
+参考答案
+parseInt(),parseFloat(),Number()
+==,!!
+
+6、什么是 “use strict”; ? 使用它的好处和坏处分别是什么？
+"use strict"
+优点:
+消除js一些不合理的用法
+消除代码运行的一些不安全之处
+增加运行速度
+为未来新版本js做铺垫
+
+缺点:严格模式改变了语义。依赖这些改变可能会导致没有实现严格模式的浏览器中出现问题或者错误。
+
+如:
+变量必须声明
+对象不能出现重复属性名
+arguments改变，不会影响函数参数
+eval，arguments变为关键字，不能作为变量名
+不允许使用with
+不用call，apply，bind改变this指向，一般函数调用指向null
+
+7、请解释同步 (synchronous) 和异步 (asynchronous) 函数的区别。
+同步调用，在发起一个函数或方法调用时，没有得到结果之前，该调用就不返回，直到返回结果；
+
+异步调用的概念和同步相对，在一个异步调用发起后，被调用者立即返回给调用者，但调用者不能立刻得到结果，被调用者在实际处理这个调用的请求完成后，通过状态、通知或回调等方式来通知调用者请求处理的结果。
+
+简单地说，同步就是发出一个请求后什么事都不做，一直等待请求返回后才会继续做事；异步就是发出请求后继续去做其他事，这个请求处理完成后会通知你，这时候就可以处理这个回应了
+
+8、
+class Animal {
+  constructor() {
+    this.type = "animal";
+  }
+  say(val) {
+    setTimeout(function () {
+      console.log(this); //window
+      console.log(this.type + " says " + val);
+    }, 1000)
+  }
+}
+var animal = new Animal();
+animal.say("hi"); 
+答案:undefined says hi
+
+9、
+function value(){
+    return 1;
+}
+var value;
+alert(typeof value);    
+答案:"function"
+
+function value(){
+    return 1;
+}
+var value = 1;
+alert(typeof value);    
+答案"number"
+
+10、
+var arr = [1,2,3,4,5];
+for(var i = 0; i < arr.length; i++){
+  arr[i] = function(){
+    alert(i)
+  }
+}
+arr[3]();//5
+答案:5
+
+
+var arr = [1,2,3,4,5];
+for(let i = 0; i < arr.length; i++){
+  arr[i] = function(){
+    alert(i)
+  }
+}
+arr[3]();
+答案:3
+
+11、javascript有哪些数据类型___,____,____,____,____,____
+【答案】Number, String, Boolean, Null, Undefined, Object
+12、如下一段代码：
+
+var a = [];
+a[100] = 1;
+console.log(a.length);
+console.log(a[0]);
+a[200] = undefined;
+console.log(a.length);
+console.log(a['100']);
+
+请问四条log语句分别输出什么？
+
+【答案】分别输出 101，undefined,  201，1
+14、parseInt('1.9'); parseInt('hello')分别返回什么值？
+【答案】分别返回 1, NaN
+
+
+15、==和===的区别
+
+【参考答案】==在比较的时候可以自动转换数据类型。===严格比较，不会进行自动转换，要求进行比较的操作数必须类型一致，不一致时返回flase。
+16、let和var的区别
+【参考答案】因为要解决var声明对象产生的问题。
+var是函数级作用域，而let是块作用域。
+var存在变量提升，即变量可以在声明之前使用，值为undefined，而let声明的变量如果在声明之前使用会抛出一个错误。
+另外let不允许重复声明变量。
+ES6 规定暂时性死区和let、const语句不出现变量提升，主要是为了减少运行时错误，防止在变量声明前就使用这个变量，从而导致意料之外的行为。这样的错误在 ES5 是很常见的，现在有了这种规17、null和undefined的区别。
+
+【参考答案】null表示一个“空”的xuiaj，它和0以及空字符串''不同，0是一个数值，''表示长度为0的字符串，而null表示“空”。在其他语言中，也有类似JavaScript的null的表示，例如Java也用null，Swift用nil，Python用None表示。但是，在JavaScript中，还有一个和null类似的undefined，它表示“未定义”。
+JavaScript的设计者希望用null表示一个空的值，而undefined表示值未定义。大多数情况下，我们都应该用null。undefined仅仅在判断函数参数是否传递的情况下有用。
+
+18、函数中this指向什么？ call, apply, bind的用法和区别。
+
+【参考答案】this指代函数的运行环境，执行obj.func()时，this指向obj，直接执行func()时，this指向全局环境。
+call, apply, bind都可以改变函数执行时的运行环境，即this的指向。
+call和apply都是调用时立刻执行的，而bind调用后返回了绑定this对象的原函数，bind比较适合将this绑定后的函数传入到其他函数中去执行，特别是作为回掉函数异步执行。
+call和bind的参数第一个参数是要绑定的对象，后面是要传入原函数的多个参数；而apply第二个参数必须是一个数组，数组中是要传入的参数。
+19、判断一个变量是否为数组的2种方法
+console.log(arr instanceof Array)
+console.log(arr.constructor === Array)
+20.深拷贝
+浅拷贝只需要Object.assign();
+符合json要求（双引号）的对象深拷贝：
+JSON.parse(JSON.stringify(obj))
+
+不严格符合json的对象的深拷贝：
+    function  deepCopy(src, r) {
+        var r = r || {};
+        for(var prop in src){
+            // console.log(prop)
+            if(typeof src[prop] === 'object'){ // 是对象  需要深拷贝
+                if (src[prop].constructor === Array){
+                    // console.log("数组");
+                    r[prop]=[];
+                }else{
+                    // console.log("对象");
+                    r[prop]={};
+                }
+                deepCopy(src[prop], r[prop]);
+            }else{ // 非对象，直接拷贝
+                r[prop] = src[prop];
+            }
+        }
+        return r;
+    }
